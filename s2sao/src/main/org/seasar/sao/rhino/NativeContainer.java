@@ -77,7 +77,7 @@ public class NativeContainer extends NativeJavaObject {
     }
 
     public String getClassName() {
-        return "org.seasar.framework.container.S2Container";
+        return "s2Container";
     }
 
 }
