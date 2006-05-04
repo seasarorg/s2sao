@@ -67,7 +67,7 @@ public class NativeContainer extends NativeJavaObject {
     			if(name != null && name.length() > 0) {
     				ret[i] = name;
     			} else {
-    				ret[i] = def.getComponentClass();
+    				ret[i] = def.getComponentClass().getName();
     			}
     		}
     		for (int i = 0; i < ids.length; i++) {
