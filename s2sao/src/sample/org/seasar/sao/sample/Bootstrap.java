@@ -31,6 +31,8 @@ public class Bootstrap {
 		System.out.println(msg);
 		String msg2 = speaker.say("kurihara");
 		System.out.println(msg2);
+		String msg3 = speaker.greeting();
+		System.out.println(msg3);
 	}
 
 }
