@@ -41,6 +41,7 @@ public class RhinoScriptEngine implements ScriptEngine {
 	private static final long serialVersionUID = -5724340206095852305L;
 	private S2Container _container;
     private WrapFactory _wrap;
+    private String _encoding;
 
 	public void setContainer(S2Container container) {
 		if(container == null) {
@@ -55,6 +56,20 @@ public class RhinoScriptEngine implements ScriptEngine {
 		}
 		return _container;
 	}
+
+	public void setEncoding(String encoding) {
+		if(encoding == null || encoding.length() == 0) {
+			throw new IllegalArgumentException();
+		}
+		_encoding = encoding;
+	}
+	
+    protected String getEncoding() {
+    	if(_encoding == null) {
+    		_encoding = System.getProperty("file.encoding", "UTF-8");
+    	}
+    	return _encoding;
+    }
 	
     protected Context enter() {
         if (_wrap == null) {
@@ -103,10 +118,6 @@ public class RhinoScriptEngine implements ScriptEngine {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		return loader.getResourceAsStream(path);
 	}
-
-    protected String getEncoding() {
-        return System.getProperty("file.encoding", "UTF-8");
-    }
 	
 	public Object compile(Class<?> sao) throws Exception {
 		String path = getScriptFilePath(sao);
