@@ -34,6 +34,7 @@ import org.seasar.sao.ScriptBinding;
 import org.seasar.sao.MethodBinding;
 
 /**
+ * RhinoによるSAOコントロールのエンジン。
  * @author Masataka Kurihara (Gluegent,Inc.)
  */
 public class RhinoScriptEngine implements ScriptEngine {

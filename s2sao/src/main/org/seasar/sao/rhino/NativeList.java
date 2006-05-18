@@ -22,6 +22,7 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Undefined;
 
 /**
+ * List型はこのクラスでラップしてJavaScriptのインデックスアクセスをできるようにする。
  * @author Masataka Kurihara (Gluegent, Inc.)
  */
 public class NativeList extends NativeJavaObject {

@@ -24,6 +24,8 @@ import org.mozilla.javascript.WrapFactory;
 import org.seasar.framework.container.S2Container;
 
 /**
+ * S2Saoにて用意したラッパークラス群をエンジンに利用させるための
+ * Rhino-API実装。
  * @author Masataka Kurihara (Gluegent, Inc.)
  */
 public class S2WrapFactory extends WrapFactory {

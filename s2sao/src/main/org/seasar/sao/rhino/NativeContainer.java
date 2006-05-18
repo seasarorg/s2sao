@@ -21,6 +21,8 @@ import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 
 /**
+ * S2Containerをこのクラスでラップして、JavaScript風に直感的な、
+ * s2Container.コンポーネント名 でアクセスできるようにする。
  * @author Masataka Kurihara (Gluegent,Inc.)
  */
 public class NativeContainer extends NativeJavaObject {

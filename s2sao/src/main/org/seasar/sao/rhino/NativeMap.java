@@ -23,6 +23,8 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.Scriptable;
 
 /**
+ * Map型をこのクラスでラップして、JavaScriptの連想配列アクセスが
+ * できるようにする。
  * @author Masataka Kurihara (Gluegent, Inc.)
  */
 public class NativeMap extends NativeJavaObject {
