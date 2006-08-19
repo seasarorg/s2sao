@@ -17,39 +17,39 @@ package org.seasar.sao.rhino;
 
 import java.lang.reflect.Method;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.seasar.sao.rhino.RhinoScriptEngine;
 import org.seasar.sao.sample.Dummy;
 import org.seasar.sao.sample.Speaker;
 
-import junit.framework.TestCase;
-
 /**
  * @author Masataka Kurihara (Gluegent,Inc.)
  */
-public class RhinoScriptEngineTest extends TestCase {
+public class RhinoScriptEngineTest {
 
 	private RhinoScriptEngine _engine;
 	
-	public RhinoScriptEngineTest(String name) {
-		super(name);
-	}
-	
-	protected void setUp() {
+	@Before
+	public void setUp() {
 		_engine = new RhinoScriptEngine();
 	}
 	
-	public void testGetScriptFilePath() {
-		assertEquals("org/seasar/sao/sample/Speaker.js",
+	@Test
+	public void getScriptFilePath() {
+		Assert.assertEquals("org/seasar/sao/sample/Speaker.js",
 				_engine.getScriptFilePath(Speaker.class));
-		assertEquals("org/seasar/sao/sample/Speaker.js",
+		Assert.assertEquals("org/seasar/sao/sample/Speaker.js",
 				_engine.getScriptFilePath(Dummy.class));
 	}
 	
-	public void testGetScriptMethodName() throws Exception {
+	@Test
+	public void getScriptMethodName() throws Exception {
 		Method say = Speaker.class.getMethod("say", String.class);
-		assertEquals("say", _engine.getScriptMethodName(say));
+		Assert.assertEquals("say", _engine.getScriptMethodName(say));
 		Method greeting = Speaker.class.getMethod("greeting");
-		assertEquals("hello", _engine.getScriptMethodName(greeting));
+		Assert.assertEquals("hello", _engine.getScriptMethodName(greeting));
 	}
 	
 }
