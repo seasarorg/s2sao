@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+		"http://www.seasar.org/dtd/components.dtd">
+<components namespace="ns1">
+	<component name="util" class="org.seasar.sao.sample.UtilImpl"/>
+	
+</components>
