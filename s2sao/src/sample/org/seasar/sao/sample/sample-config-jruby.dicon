@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+		"http://www.seasar.org/dtd/components.dtd">
+<components>
+
+	<component class="org.seasar.sao.jruby.JRubyScriptEngine">
+	  <property name="runtime">@org.jruby.Ruby@getDefaultInstance()</property>
+	</component>
+
+	<component name="sao" class="org.seasar.sao.S2SaoInterceptor"/>
+
+	<component class="org.seasar.sao.sample.Speaker">
+		<aspect>sao</aspect>
+	</component>
+
+	<component name="util" class="org.seasar.sao.sample.UtilImpl"/>
+	
+</components>
