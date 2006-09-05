@@ -2,6 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 		"http://www.seasar.org/dtd/components.dtd">
 <components>
+    <include path="org/seasar/sao/sample/sample-config-ns1.dicon"/>
 
 	<component class="org.seasar.sao.jruby.JRubyScriptEngine">
 	  <property name="runtime">@org.jruby.Ruby@getDefaultInstance()</property>
@@ -13,6 +14,6 @@
 		<aspect>sao</aspect>
 	</component>
 
-	<component name="util" class="org.seasar.sao.sample.UtilImpl"/>
+	<!--component name="util" class="org.seasar.sao.sample.UtilImpl"/-->
 	
 </components>

@@ -1,6 +1,5 @@
 def say(name)
-  #"Hello, #{name}!"
-  util.greeting(name)
+  ns1.util.greeting(name)
 end
 
 def hello

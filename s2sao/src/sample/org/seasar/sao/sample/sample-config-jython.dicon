@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 		"http://www.seasar.org/dtd/components.dtd">
 <components>
-    <include path="org/seasar/sao/sample/sample-config-jython-ns1.dicon"/>
+    <include path="org/seasar/sao/sample/sample-config-ns1.dicon"/>
 
 	<component class="org.seasar.sao.jython.JythonScriptEngine">
 	  <arg><component class="org.seasar.sao.jython.PyContainerStringMap" /></arg>
