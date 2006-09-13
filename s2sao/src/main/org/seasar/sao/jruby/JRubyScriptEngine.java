@@ -23,7 +23,6 @@ import java.lang.reflect.Method;
 import org.jruby.IRuby;
 import org.jruby.Ruby;
 import org.jruby.RubyModule;
-import org.jruby.javasupport.JavaObject;
 import org.jruby.javasupport.JavaUtil;
 import org.jruby.runtime.Arity;
 import org.jruby.runtime.builtin.IRubyObject;
@@ -108,7 +107,7 @@ public class JRubyScriptEngine implements ScriptEngine {
         IRubyObject result = main.callMethod(getScriptMethodName(method), rubyArgs);
         return JavaUtil.convertRubyToJava(result);
     }
-    
+
     protected RubyModule getS2ContainerModule(IRuby runtime, S2Container container) {
         RubyModule module = runtime.getModule("S2Container");
         if (module == null) {
@@ -118,25 +117,22 @@ public class JRubyScriptEngine implements ScriptEngine {
         }
         return module;
     }
-    
+
     static class TopSelfMethodMissingHandler implements Callback {
         final S2Container container;
         final IRuby runtime;
+        
         TopSelfMethodMissingHandler(S2Container container, IRuby runtime) {
             this.container = container;
             this.runtime = runtime;
         }
+
         public IRubyObject execute(IRubyObject recv, IRubyObject[] args) {
             if (0 < args.length) {
                 String name = args[0].asSymbol();
                 if (container.hasComponentDef(name)) {
                     Object component = container.getComponent(name);
-                    IRubyObject obj = JavaUtil.convertJavaToRuby(runtime, component);
-                    RubyModule proxy = ComponentMethodMissing.getS2ComponentProxy(runtime);
-                    if (!obj.isKindOf(proxy)) {
-                        obj.extendObject(proxy);
-                    }
-                    return obj;
+                    return RubyComponentUtil.convertJavaToRuby(runtime, component);
                 }
             }
             return recv.callMethod("method_missing", args);
@@ -145,96 +141,5 @@ public class JRubyScriptEngine implements ScriptEngine {
         public Arity getArity() {
             return Arity.required(1);
         }
-    }
-    
-    static class ComponentMethodMissing implements Callback {
-        final IRuby runtime;
-        
-        ComponentMethodMissing(IRuby runtime) {
-            this.runtime = runtime;
-        }
-
-        static RubyModule getS2ComponentProxy(IRuby runtime) {
-            RubyModule module = runtime.getModule("S2ComponentProxy");
-            if (module == null) {
-                module = runtime.defineModule("S2ComponentProxy");
-                module.defineModuleFunction("method_missing", new ComponentMethodMissing(runtime));
-            }
-            return module;
-        }
-        
-        public IRubyObject execute(IRubyObject recv, IRubyObject[] args) {
-            if (args.length < 1) {
-                return recv.callMethod("method_missing", args);
-            }
-            String name = args[0].asSymbol();
-            JavaObject javaObject = (JavaObject) recv;
-            if (javaObject.getValue() instanceof S2Container) {
-                S2Container container = (S2Container) javaObject.getValue();
-                if (container.hasComponentDef(name)) {
-                    Object component = container.getComponent(name);
-                    IRubyObject obj = JavaUtil.convertJavaToRuby(runtime, component);
-                    RubyModule proxy = getS2ComponentProxy(runtime);
-                    if (!obj.isKindOf(proxy)) {
-                        obj.extendObject(proxy);
-                    }
-                    return obj;
-                }
-            }
-            Class[] argTypes = getArgTypes(args);
-            Method method = loadMethod(recv.getJavaClass(), name, argTypes);
-            if (method == null) {
-                return recv.callMethod("method_missing", args);
-            }
-            Object result = null;
-            try {
-                result = method.invoke(javaObject.getValue(), getJavaArgs(args));
-            }
-            catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            return JavaUtil.convertJavaToRuby(runtime, result);
-        }
-        
-        private Class[] getArgTypes(IRubyObject[] args) {
-            if (args.length == 1) {
-                return new Class[0];
-            }
-            Class[] argTypes = new Class[args.length-1];
-            for (int i = 1; i < args.length; i++) {
-                argTypes[i-1] = JavaUtil.convertRubyToJava(args[i]).getClass();
-            }
-            return argTypes;
-        }
-        
-        private Object[] getJavaArgs(IRubyObject[] rubyArgs) {
-            if (rubyArgs.length == 1) {
-                return new Object[0];
-            }
-            Object[] args = new Object[rubyArgs.length-1];
-            for (int i = 1; i < rubyArgs.length; i++) {
-                args[i-1] = JavaUtil.convertRubyToJava(rubyArgs[i]);
-            }
-            return args;
-        }
-        
-        private Method loadMethod(Class javaClass, String methodName, Class[] parameterTypes) {
-            Method m;
-            try {
-                m = javaClass.getMethod(methodName, parameterTypes);
-            }
-            catch (SecurityException e) {
-                throw new RuntimeException(e);
-            }
-            catch (NoSuchMethodException e) {
-                return null;
-            }
-            return m;
-        }
-        
-        public Arity getArity() {
-            return Arity.required(1);
-        }
-        
     }
 }
